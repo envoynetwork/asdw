@@ -1,0 +1,25 @@
+{
+  "name": "dinowarriors",
+  "version": "1.0.0",
+  "description": "Dino Warriors smart contract code",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test --network development"
+  },
+  "keywords": [
+    "Dino Warriors",
+    "Envoy"
+  ],
+  "author": "kasperdeblieck",
+  "license": "ISC",
+  "dependencies": {
+    "@chainlink/contracts": "^0.2.1",
+    "@truffle/hdwallet-provider": "^1.5.0",
+    "assertions": "^2.3.4",
+    "openzeppelin-solidity": "^4.3.1",
+    "truffle": "^5.4.9"
+  }
+}
