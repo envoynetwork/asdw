@@ -36,7 +36,7 @@ contract DinoWarriors is VRFConsumerBase, ERC1155, Ownable() {
     // Keep track of tokens already minted
     mapping (uint256=>bool) public mintedTokens;
 
-    // Random generator arguments
+    // Random generator arguments for Chainlink
     bytes32 internal keyHash;
     uint256 internal fee;
     address public linkToken;
