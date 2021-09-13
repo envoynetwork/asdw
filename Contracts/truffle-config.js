@@ -1,5 +1,5 @@
 /**
- * Envoy Billboard SC deployment config
+ * Envoy Dino Warriors deployment config
  */
 
  const HDWalletProvider = require('@truffle/hdwallet-provider');
