@@ -1,7 +1,12 @@
+//SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
 import "openzeppelin-solidity/contracts/token/ERC1155/ERC1155.sol";
 import "openzeppelin-solidity/contracts/access/Ownable.sol";
+
+// In Remix, use:
+//import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC1155/ERC1155.sol";
+//import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
 /**
  * Only limited personal non-commercial use and resale rights in the NFT are granted and all copyright and other rights are reserved.
@@ -58,7 +63,7 @@ contract DinoWarriors is ERC1155, Ownable() {
 
             legalTerms = "Only limited personal non-commercial use and resale rights in the NFT are granted and all copyright and other rights are reserved. The terms and conditions of Alien Samurai Dino Warriors (https://dinowarriors.io) are applicable.";
             /* Set Tiers */
-
+            // S
             tiers['OG_CARD'] = Tier({price: 0.15 ether, mintable: 0, dropWave: 1, tokenToBurn: ''});
             tiers['SILVER'] = Tier({price: 0, mintable: 0, dropWave: 1, tokenToBurn: 'OG_CARD'});
             tiers['GOLD'] = Tier({price: 0.55 ether, mintable: 0, dropWave: 1, tokenToBurn: ''});
@@ -340,71 +345,5 @@ contract DinoWarriors is ERC1155, Ownable() {
         bytes memory data) internal override pure {
         revert("This contract does not mint batches.");
     }
-    // /**
-    //  * Function to mint token.
-    //  * If the event is not active, accesstickets are minted.
-    //  * If it is active, NFT's are minted.
-    //  */
-    // function _mint() external {
-    //     if(dinoConActive == false){
-    //         _mintAccessTicket();
-    //     } else {
-    //         _mintCard();
-    //     }
-    // }
-
-    // /**
-    //  * Mint accesstickets 1 at a time.
-    //  */
-    // function _mintAccessTicket() private {
-
-    //     require(maxAmount > currentAccessTicketAmount,
-    //         "All access cards are already assinged!");
-        
-    //     uint256 weiAmount = msg.value;
-    //     require(weiAmount == price, "Invalid ETH paid");
-
-    //     // Send ETH to wallet
-    //     payable(wallet).transfer(weiAmount);
-
-    //     address account = _msgSender();
-
-    //     ERC1155._mint(account, ACCESS_TICKET, 1, "");
-        
-    //     currentAccessTicketAmount++; 
-    // }
-
-    // /**
-    //  * Function to mint token.
-    //  * The token ID will be linked to a randomly assigned card..
-    //  * Randomness will be provided off-chain.
-    //  * You need to have an access ticket before you can mint,
-    //  * and you can only mint once with each address.
-    //  */
-    // function _mintCard(id) private{
-
-    //     require(maxAmount > currentTokenAmount,
-    //         "All tokens are already minted");
-
-    //     address account = _msgSender();
-    //     //
-    //     require(ERC1155.balanceOf(account, ACCESS_TICKET) > 0,
-    //         "You need an access ticket to mint your NFT");
-    //     require(ticketUsed[account] == false,
-    //         "You already used your ticket");
-
-    //     // Increment up front to skip token 0
-    //     currentTokenAmount++; 
-
-    //     // Use one access ticket and mint an NFT
-    //     ticketUsed[account] = true;
-    //     ERC1155._burn(account, ACCESS_TICKET, 1, "");
-        
-    //     ERC1155._mint(account, currentTokenAmount, 1, "");
-
-    //     emit Minted(account, currentTokenAmount);
-    // }
-
-
 
 }

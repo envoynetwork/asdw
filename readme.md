@@ -43,3 +43,11 @@ If you want to mint a token, you can use the _mint function with 1 or 2 argument
 
 Depending on the tier configuration, the second argument might be needed. Sometimes everyone can mint (e.g. OG cards), sometimes only owners of drops in a certain wave are allowed to mint (e.g. initial silver tier). In the last case, a second token should be provided to proove minting is allowed. Of course, the minter should own tokens of the provided secondairy token.
 Some tiers require a fee to be paid. This fee is described in the tier struct and should be send with the transaction. It will automatically be transfered to a wallet defined  by the contract owner.
+
+## Networks
+
+### Rinkeby
+
+**Contract address**: 0x3d38945ea7f29d8e110da1788e2beaee1b11c02f
+**Contract owner**:  0x6b4934c85B8cb94A6a7aC4496a2eEc9184fFac59
+**Transaction hash**: 0x083a1263c1a8a357aa37aab27347b62e7455d342aad5d5694c84ef4bd52d277f
