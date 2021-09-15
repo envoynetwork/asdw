@@ -27,6 +27,7 @@ contract("Test adding tiers and tokens", function(accounts) {
         await truffleAssert.reverts(dinowarriors.addToken(testToken1, tokenAmount, testToken1, {from: minterAddress}),
             "caller is not the owner");
 
+        // Might be good to also check if all data was saved correctly in the map/structs
         await dinowarriors.addTier(testToken1, tokenPrice, 2, dropWave1, web3.utils.fromAscii(''), {from: ownerAddress});
         await dinowarriors.addToken(testToken1, tokenAmount, testToken1, {from: ownerAddress});
 

@@ -14,6 +14,8 @@ import "openzeppelin-solidity/contracts/access/Ownable.sol";
  */
 contract DinoWarriors is ERC1155, Ownable() {
 
+    // As best practice I always use "using SafeMath for uint256;" to make sure
+
     // Events for minting and activating the event
     event Minted(address indexed account, bytes32 indexed token, uint minted);
 
@@ -30,6 +32,7 @@ contract DinoWarriors is ERC1155, Ownable() {
 
     struct Tier {
         uint256 price; // Price in Wei
+        // Possible to change the following two to uint128 to safe gas fees?
         uint256 mintable; /*By who can the token be minted?
                             - 0: nobody can mint.
                             - x: everyone with a drop reward between wave 1 and wave x can mint.
@@ -279,9 +282,13 @@ contract DinoWarriors is ERC1155, Ownable() {
      * In order to mint tokens, following criteria must be met:
      *   - You must provide a token
      */
+    // Is it possible to make this an external function instead of public to safe gas fees?
     function _mint(bytes32 tokenToMint, bytes32 tokenToUse) public payable {
 
+        // Not really needed to allocate a new var?
         address account = _msgSender();
+
+        // Does this need to be in storage? Why not memory?
         TokenInfo storage tokenToMintObject = tokenInfo[tokenToMint];
 
 
@@ -301,6 +308,7 @@ contract DinoWarriors is ERC1155, Ownable() {
                 "You have no balance of the access token provided.");
 
             // Check if the token provided gives minting access
+            // The following check is not in tests
             require((tierToMint.mintable != 0) &&
                     ((tierToMint.mintable >= tierToUse.dropWave) || tierToMint.mintable == latestDropWave),
                     "You are not allowed to mint this token at this point in time.");
