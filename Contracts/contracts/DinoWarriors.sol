@@ -9,12 +9,18 @@ import "openzeppelin-solidity/contracts/access/Ownable.sol";
 //import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
 /**
+ * Smart contract used for Alien Samurai Dino Warriors NFT's. Legal terms:
  * Only limited personal non-commercial use and resale rights in the NFT are granted and all copyright and other rights are reserved.
  * The terms and conditions of Alien Samurai Dino Warriors (https://dinowarriors.io) are applicable.
  */
 contract DinoWarriors is ERC1155, Ownable() {
 
-    // Events for minting and activating the event
+    /**
+     * Event emitting after each mint
+     * @param account The address that minted the token
+     * @param token The human readable name of the token in bytes32
+     * @param minted The amount of minted tokens of this type
+     */
     event Minted(address indexed account, bytes32 indexed token, uint minted);
 
     // Struct to keep info on all tokens
@@ -41,6 +47,7 @@ contract DinoWarriors is ERC1155, Ownable() {
 
 
     // Map each tier to it's information
+    /** @dev test */
     mapping(bytes32 => Tier) public tiers;
 
     // Keep track of latest drop
@@ -55,6 +62,15 @@ contract DinoWarriors is ERC1155, Ownable() {
     // Address receiving the funds after minting with fees
     address public wallet;
 
+    /**
+     * @dev The constructor will call the constructer of the ERC1155 contract,
+     * and hardcode:
+     * - legal terms of the contract
+     * - Initial tiers to start with
+     *- Initial tokens to start with
+     * - Which tokens are preminted by Envoy
+     * @param uri_ The URI to link metadata to the NFT's
+     */
     constructor(
         string memory uri_
         )
@@ -63,7 +79,6 @@ contract DinoWarriors is ERC1155, Ownable() {
 
             legalTerms = "Only limited personal non-commercial use and resale rights in the NFT are granted and all copyright and other rights are reserved. The terms and conditions of Alien Samurai Dino Warriors (https://dinowarriors.io) are applicable.";
             /* Set Tiers */
-            // S
             tiers['OG_CARD'] = Tier({price: 0.15 ether, mintable: 0, dropWave: 1, tokenToBurn: ''});
             tiers['SILVER'] = Tier({price: 0, mintable: 0, dropWave: 1, tokenToBurn: 'OG_CARD'});
             tiers['GOLD'] = Tier({price: 0.55 ether, mintable: 0, dropWave: 1, tokenToBurn: ''});
@@ -184,6 +199,11 @@ contract DinoWarriors is ERC1155, Ownable() {
   // ******************* OWNERSHIP *******************
   //
 
+    /**
+     * Function for the owner to update the wallet to which minting fees are sent.
+     * By default, this will be the owner of the contract
+     * @param wallet_ the address to receive funds
+     */
     function updateWallet(address wallet_) external onlyOwner {
         wallet = wallet_; 
     }
@@ -200,7 +220,18 @@ contract DinoWarriors is ERC1155, Ownable() {
     
     /**
      * Functions to create new tiers, or to modify price and mintable of existing tier.
+     * Only the owner can run this function.
      * Drop waves cannot be altered, and should always be higher than the latest drop wave.
+     * @param name The human readable key of the tier
+     * @param price_ The price that is required for minting tokens of this tier
+     * @param mintable_ Wetter the tokens in this tier are already mintable (0 for no).
+     * - 0: nobody can mint.
+     * - x: everyone with a drop reward between wave 1 and wave x can mint.
+     *      x can be increased over time to have stepwise priority for pre-sales
+     * - Equal to latestDropWave + 1: everyone can mint 
+     * @param dropWave_ In which wave is this drop? For the ASDW cards, this will be 1.
+     * @param tokenToBurn_ If only current token owners are allowed to mint, they will need
+     * to burn their token in the minting process if it is this token.
      */
 
     function addTier(
@@ -227,12 +258,26 @@ contract DinoWarriors is ERC1155, Ownable() {
         }
     }
 
+    /**
+     * Make a tier (un)mintable for (part of) the minters. Only the owner can run this function.
+     * @param name The human readable key of the tier
+     * @param mintable_ Wetter the tokens in this tier are already mintable (0 for no).
+     * - 0: nobody can mint.
+     * - x: everyone with a drop reward between wave 1 and wave x can mint.
+     *      x can be increased over time to have stepwise priority for pre-sales
+     * - Equal to latestDropWave + 1: everyone can mint 
+     */
     function setTierMintability(
         bytes32 name,
         uint256 mintable_) external onlyOwner{
             tiers[name].mintable = mintable_;
     }
 
+    /**
+     * Change the price of an existing tier.
+     * @param name The human readable key of the tier
+     * @param price_ New price in wei for the tier
+     */
     function setTierPrice(
         bytes32 name,
         uint256 price_) external onlyOwner{
@@ -241,8 +286,12 @@ contract DinoWarriors is ERC1155, Ownable() {
 
 
     /**
-     * Function to add new tokens.
-     * New Tokens should always
+     * Function to add new tokens. Only the owner can run this function.
+     * New Tokens should always have a new human readable name as key,
+     * And they need to be in a tier of the latest wave available.
+     * @param name human readable name of the token
+     * @param totalAmount_ the total amount of tokens available for this token
+     * @param tier_ the tier in which the NFT is released, containing the price, dropwave,...
      */
     function addToken(bytes32 name,
         uint256 totalAmount_,
@@ -265,7 +314,7 @@ contract DinoWarriors is ERC1155, Ownable() {
     }
 
     /**
-     * Add new tokens of an existing token
+     * Add new tokens of an existing token. Only the owner can run this function.
      * @param name the name of the token to add
      * @param additionalTokenAmount the amount of tokens to add
      */
@@ -277,7 +326,15 @@ contract DinoWarriors is ERC1155, Ownable() {
     /**
      * Function to mint tokens.
      * In order to mint tokens, following criteria must be met:
-     *   - You must provide a token
+     * - There are still unminted tokens of tokenToMint
+     * - The price in ETH sent should equal the price of the tier of tokenToMint.
+     * - Depending on the 'mintability' field of the tier of the token,
+     *   the minter needs to provide a second token to prove he is allowed to mint.
+     *   Of course, the minter should have a positive balance for this token.
+     * @param tokenToMint Human readable name of the token that will be minted
+     * @param tokenToUse Token provided by the minter to prove he is allowed to mint.
+     * The 'mintability' of the 'tier' of tokenToMint will define if the token allows minting or not.
+     * The owner should own the token, and the token will possibly be burned in the process.
      */
     function _mint(bytes32 tokenToMint, bytes32 tokenToUse) public payable {
 
@@ -326,6 +383,11 @@ contract DinoWarriors is ERC1155, Ownable() {
 
     }
 
+    /**
+     * Overloaded function to allow minting tokens without providing a secondary token.
+     * This will only work if everyone is allowed to mint the token and is only for ease of use.
+     * @param tokenToMint Human readable name of the token that will be minted
+     */
     function _mint(bytes32 tokenToMint) public payable {
         _mint(tokenToMint, '');
     }

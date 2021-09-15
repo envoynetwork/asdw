@@ -1,0 +1,1 @@
+npx solidity-docgen --solc-settings  "{remappings: ['openzeppelin-solidity=$PWD/Contracts/node_modules/openzeppelin-solidity']}" --solc-module solc-0.8 -i Contracts/contracts/ --templates Contracts/docs/

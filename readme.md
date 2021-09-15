@@ -1,13 +1,13 @@
 # Alien Samurai Dino Warriors
 
-This repository contains the code for the Envoy Alien Samurai Dino Warriors NFT drops.
+This repository contains the code for the Envoy Alien Samurai Dino Warriors NFT drops. Technical information on the smart contract interface can be found in the `docs/` folder.
 
 ## Contracts
 
 This folder contains the smart contract code. The code keeps track of NFT information at two levels of granularity:
 
-1. Tier level
-2. Token level
+1. **Tier** level
+2. **Token** level
 
 Both tiers and tokens are stored in a mapping from a human readable name (in bytes32) to a struct. The struct datastructures are described below.
 

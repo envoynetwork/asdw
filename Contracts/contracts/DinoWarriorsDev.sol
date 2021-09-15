@@ -53,6 +53,7 @@ contract DinoWarriorsDev is ERC1155, Ownable() {
     string public legalTerms;
 
     // Address receiving the funds after minting with fees
+
     address public wallet;
 
     constructor(
