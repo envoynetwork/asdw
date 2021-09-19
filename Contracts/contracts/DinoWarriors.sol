@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "openzeppelin-solidity/contracts/token/ERC1155/ERC1155.sol";
 import "openzeppelin-solidity/contracts/access/Ownable.sol";
+import "openzeppelin-solidity/contracts/utils/math/SafeMath.sol";
 
 // In Remix, use:
 //import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC1155/ERC1155.sol";
@@ -14,6 +15,9 @@ import "openzeppelin-solidity/contracts/access/Ownable.sol";
  * The terms and conditions of Alien Samurai Dino Warriors (https://dinowarriors.io) are applicable.
  */
 contract DinoWarriors is ERC1155, Ownable() {
+
+    using SafeMath for uint128;
+    //using SafeMath for uint256;
 
     /**
      * Event emitting after each mint
@@ -189,10 +193,11 @@ contract DinoWarriors is ERC1155, Ownable() {
             tokenInfo['MAMMAL_KING'] = TokenInfo({id: 99, mintedAmount: 0, totalAmount: 35, tier: 'GOLD'});
             tokenInfo['CYBERSHARK'] = TokenInfo({id: 100, mintedAmount: 0, totalAmount: 25, tier: 'GOLD'});
             // Diamond ASDW cards
+            
             tokenInfo['DIAMOND'] = TokenInfo({id: 101, mintedAmount: 0, totalAmount: 1, tier: 'DIAMOND'});
             currentTokenId = 102;
             // Diamond minted by Envoy for direct auction
-            _mint('DIAMOND', '');
+            //_mint('DIAMOND');
     }
 
   //
@@ -233,13 +238,12 @@ contract DinoWarriors is ERC1155, Ownable() {
      * @param tokenToBurn_ If only current token owners are allowed to mint, they will need
      * to burn their token in the minting process if it is this token.
      */
-
     function addTier(
         bytes32 name,
         uint256 price_,
         uint256 mintable_,
         uint256 dropWave_,
-        bytes32 tokenToBurn_) external onlyOwner{
+        bytes32 tokenToBurn_) public onlyOwner{
         
         require(dropWave_ >= latestDropWave,
             "You cannot go back in time");
@@ -258,6 +262,25 @@ contract DinoWarriors is ERC1155, Ownable() {
         }
     }
 
+    /**
+     * Function to add multiple tiers in 1 transaction
+     * @param names The names of the tiers to add
+     * @param prices_ The price for each token
+     * @param mintable_ Which tiers can already be minted?
+     * @param dropWaves_ The different drop waves
+     * @param tokensToBurn_ Which tokens should be burned when provided in the minting process?
+     */
+    function addTiersBatch(
+        bytes32[] memory names,
+        uint256[] memory prices_,
+        uint256[] memory mintable_,
+        uint256[] memory dropWaves_,
+        bytes32[] memory tokensToBurn_) external onlyOwner{
+        
+        for(uint256 i = 1; i<names.length; i++){
+            this.addTier(names[i], prices_[i], mintable_[i], dropWaves_[i], tokensToBurn_[i]);
+        }    
+    }
     /**
      * Make a tier (un)mintable for (part of) the minters. Only the owner can run this function.
      * @param name The human readable key of the tier
@@ -292,27 +315,63 @@ contract DinoWarriors is ERC1155, Ownable() {
      * @param name human readable name of the token
      * @param totalAmount_ the total amount of tokens available for this token
      * @param tier_ the tier in which the NFT is released, containing the price, dropwave,...
+     * @param amountToPreMint The amount of tokens to be preminted by the owner
      */
     function addToken(bytes32 name,
         uint256 totalAmount_,
-        bytes32 tier_) external onlyOwner{
+        bytes32 tier_,
+        uint256 amountToPreMint) public onlyOwner{
+
+        emit Minted(_msgSender(), name, tiers[name].dropWave);
         
-        require(tokenInfo[name].totalAmount == 0,
-            "Token already exists");
+        // require(tokenInfo[name].totalAmount == 0,
+        //     "Token already exists");
 
         // Implicit test if tier exists
         require(tiers[tier_].dropWave >= latestDropWave,
             "You cannot add tokens for previous waves");
 
+        require(amountToPreMint <= totalAmount_,
+            "You cannot mint more tokens than the total supply");
+
         tokenInfo[name] = TokenInfo({id: currentTokenId,
-                                    mintedAmount: 0,
+                                    mintedAmount: amountToPreMint,
                                     totalAmount: totalAmount_,
                                     tier: tier_
                                     });
-        
+
+        if(amountToPreMint != 0){
+            ERC1155._mint(_msgSender(), currentTokenId, amountToPreMint, "");
+        }
+
         currentTokenId++;
     }
 
+    /**
+     * Overload function when no tokens need to be preminted
+     */
+    function addToken(bytes32 name,
+        uint256 totalAmount_,
+        bytes32 tier_) public onlyOwner{
+        this.addToken(name, totalAmount_, tier_, 0);
+    }
+
+    /**
+     * Add multiple tokens at once.
+     * @param names Array containing the token names
+     * @param totalAmounts_ Array containing the total amount for each token. Should have the same length as names.
+     * @param tiers_ Array containing the tier for each token. Should have the same length as names.
+     * @param amountsToPreMint_ Array containing the amount of tokens to premint for each token.
+     *   Should have the same length as names.
+     */
+    function addTokensBatch(bytes32[] memory names,
+        uint256[] memory totalAmounts_,
+        bytes32[] memory tiers_,
+        uint256[] memory amountsToPreMint_) public onlyOwner{
+            for(uint256 i = 1; i<names.length; i++){
+                addToken(names[i], totalAmounts_[i], tiers_[i], amountsToPreMint_[i]);
+            }
+        }
     /**
      * Add new tokens of an existing token. Only the owner can run this function.
      * @param name the name of the token to add
@@ -336,7 +395,7 @@ contract DinoWarriors is ERC1155, Ownable() {
      * The 'mintability' of the 'tier' of tokenToMint will define if the token allows minting or not.
      * The owner should own the token, and the token will possibly be burned in the process.
      */
-    function _mint(bytes32 tokenToMint, bytes32 tokenToUse) public payable {
+    function _mint(bytes32 tokenToMint, bytes32 tokenToUse) external payable {
 
         address account = _msgSender();
         TokenInfo storage tokenToMintObject = tokenInfo[tokenToMint];
@@ -345,15 +404,15 @@ contract DinoWarriors is ERC1155, Ownable() {
         require(tokenToMintObject.totalAmount > tokenToMintObject.mintedAmount,
             "All tokens are already minted for this ID!");
         
-        Tier storage tierToMint = tiers[tokenToMintObject.tier];
+        Tier memory tierToMint = tiers[tokenToMintObject.tier];
 
         // Check if everyone is allowed to mint.
         // If not, check if the token provided gives the right to mint,
         // and burn it if this is required.
         if(tierToMint.mintable <= latestDropWave){
 
-            TokenInfo storage tokenToUseObject = tokenInfo[tokenToUse];
-            Tier storage tierToUse = tiers[tokenToUseObject.tier];
+            TokenInfo memory tokenToUseObject = tokenInfo[tokenToUse];
+            Tier memory tierToUse = tiers[tokenToUseObject.tier];
             require(ERC1155.balanceOf(account, tokenToUseObject.id) > 0,
                 "You have no balance of the access token provided.");
 
@@ -388,8 +447,8 @@ contract DinoWarriors is ERC1155, Ownable() {
      * This will only work if everyone is allowed to mint the token and is only for ease of use.
      * @param tokenToMint Human readable name of the token that will be minted
      */
-    function _mint(bytes32 tokenToMint) public payable {
-        _mint(tokenToMint, '');
+    function _mint(bytes32 tokenToMint) external payable {
+        this._mint(tokenToMint, '');
     }
     // Disable minting inherited from ERC1155
     function _mint (
