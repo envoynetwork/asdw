@@ -273,6 +273,7 @@ contract DinoWarriors is ERC1155, Ownable() {
 
     /**
      * Overload function when no tokens need to be preminted
+     * @dev disabled because contract got to big
      */
     // function addToken(bytes32 name,
     //     uint256 totalAmount_,
@@ -319,7 +320,11 @@ contract DinoWarriors is ERC1155, Ownable() {
      * - Depending on the 'mintability' field of the tier of the token,
      *   the minter needs to provide a second token to prove he is allowed to mint.
      *   Of course, the minter should have a positive balance for this token.
+     * If a whitelist applies for the tier, the minter should be on the latest version of the whitelist,
+     * and should have transactions left.
+     * The amount of tokens that is being minted should not exceed the limit set in the tier.
      * @param tokenToMint Human readable name of the token that will be minted
+     * @param amount The amount of tokens to mint in this transaction
      * @param tokenToUse Token provided by the minter to prove he is allowed to mint.
      * The 'mintability' of the 'tier' of tokenToMint will define if the token allows minting or not.
      * The owner should own the token, and the token will possibly be burned in the process.
@@ -368,11 +373,12 @@ contract DinoWarriors is ERC1155, Ownable() {
                     "You are not allowed to mint this token at this point in time.");
             
             // Check if the owner actually owns the token used to claim minting
-            require(ERC1155.balanceOf(account, tokenToUseAsInt) >= amount ,
+            require(ERC1155.balanceOf(account, tokenToUseAsInt) > 0 ,
                 "You have no balance of the access token provided.");
 
             // Check if the token needs to be burned before being able to mint
             if(tierToMint.tokenToBurn == tokenToUseAsInt){
+                // Will revert if the balance of the token to burn is smaller than the balance
                 ERC1155._burn(account, tokenToUseAsInt, amount);
             }
         }
@@ -392,6 +398,7 @@ contract DinoWarriors is ERC1155, Ownable() {
     /*
      * Overloaded function to allow minting tokens without providing a secondary token.
      * This will only work if everyone is allowed to mint the token and is only for ease of use.
+     * @dev disabled because contract got to big
      * @param tokenToMint Human readable name of the token that will be minted
      */
     // function _mint(bytes32 tokenToMint, uint256 amount) external payable {

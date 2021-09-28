@@ -13,7 +13,7 @@
         "price": 0,
         "mintable": 0,
         "dropWave": 1,
-        "tokenToBurn": "",
+        "tokenToBurn": "CLASSIC",
         "mintPerTransaction": 1,
         "whitelist": false
     },
