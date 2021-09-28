@@ -5,8 +5,8 @@
  const HDWalletProvider = require('@truffle/hdwallet-provider');
 
  const fs = require('fs');
- const privateKeys = [fs.readFileSync(".secret").toString().trim()];
- const infuraKey = fs.readFileSync(".infuraKey").toString().trim();
+ const privateKeys = [fs.readFileSync("../secrets/.secret").toString().trim()];
+ const infuraKey = fs.readFileSync("../secrets/.infuraKey").toString().trim();
  
  module.exports = {
  
@@ -18,8 +18,14 @@
       host: "127.0.0.1",
       port: 8545,
       network_id: "*",
+      gas: 1000000000000000
     },
- 
+     // Development
+    developmentFullFlow: {
+      host: "127.0.0.1",
+      port: 8545,
+      network_id: "*"
+    },
     // Testnet
     goerli: {
       provider: function() {
@@ -38,8 +44,14 @@
           privateKeys: privateKeys,
           providerOrUrl: "https://rinkeby.infura.io/v3/" + infuraKey})      },
       network_id: 4
-    }
- 
+    },
+    rinkebyFullFlow: {
+      provider: function() {
+        return new HDWalletProvider({
+          privateKeys: privateKeys,
+          providerOrUrl: "https://rinkeby.infura.io/v3/" + infuraKey})      },
+      network_id: 4
+    } 
     // Mainnet
     // TODO
 
@@ -54,6 +66,10 @@
   compilers: {
     solc: {
       version: "0.8.0",
+      optimizer: {
+        enabled: true,
+        runs: 1500
+      }
     }
   },
 
