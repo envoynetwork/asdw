@@ -38,7 +38,7 @@ module.exports = async function (deployer, network) {
             tiers,
             amountsToPremint);
         
-        // Get mapping from bytes32 string to uint. Apply on local env
+        // Get mapping from bytes32 string to uint. Apply on local env to avoid gas costs
         // for(i=0; i<names.length; i++){
         //     console.log(tokenData.names[i], (await dinowarriors.tokenInfoFromBytes32(names[i])).id.toString())
         // }
