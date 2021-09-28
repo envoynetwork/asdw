@@ -15,7 +15,7 @@
         "dropWave": 1,
         "tokenToBurn": "",
         "mintPerTransaction": 1,
-        "whitelist": true
+        "whitelist": false
     },
     {
         "name": "SILVER",

@@ -29,7 +29,8 @@ contract DinoWarriors is ERC1155, Ownable() {
     // Map each token description to the technical information
     mapping(uint256 => TokenInfo) public tokenInfo;
 
-    // Mapping from token ID to allowed amount of tokens to mint
+    // Inner mapping: from address to allowed amount of mint transactions.
+    // Outer mapping: current presale list to inner mapping
     mapping(uint128 => mapping(address => uint256)) public whitelist;
 
     struct Tier {
@@ -164,6 +165,7 @@ contract DinoWarriors is ERC1155, Ownable() {
 
     // /**
     //  * Function to add multiple tiers in 1 transaction
+    //  * @dev disabled because contract got to big
     //  * @param names The names of the tiers to add
     //  * @param prices_ The price for each token
     //  * @param mintable_ Which tiers can already be minted?
@@ -330,13 +332,16 @@ contract DinoWarriors is ERC1155, Ownable() {
         TokenInfo storage tokenToMintObject = tokenInfo[tokenToMintAsInt];
 
         require(tokenToMintObject.totalAmount > 0,
-            "The token provided does not exists");
+            "The token to mint does not exists");
 
         require(tokenToMintObject.totalAmount >= tokenToMintObject.mintedAmount + amount,
             "Insufficient tokens left for this transaction");
         
         Tier memory tierToMint = tiers[tokenToMintObject.tier];
 
+        require(tierToMint.mintable > 0,
+            "Token is not open for minting");
+             
         require(tierToMint.maxMintPerTransaction >= amount,
             "You cannot mint this amount in one transaction for tokens in this tier");
 
@@ -354,9 +359,12 @@ contract DinoWarriors is ERC1155, Ownable() {
             TokenInfo memory tokenToUseObject = tokenInfo[tokenToUseAsInt];
             Tier memory tierToUse = tiers[tokenToUseObject.tier];
 
+
+            require(tokenToUseObject.totalAmount > 0,
+                "The token provided to prove you can mint does not exists");
+
             // Check if the token provided gives minting access
-            require((tierToMint.mintable != 0) &&
-                    ((tierToMint.mintable >= tierToUse.dropWave) || tierToMint.mintable == latestDropWave),
+            require(tierToMint.mintable >= tierToUse.dropWave,
                     "You are not allowed to mint this token at this point in time.");
             
             // Check if the owner actually owns the token used to claim minting

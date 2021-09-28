@@ -1,5 +1,4 @@
 const DinoWarriors = artifacts.require("DinoWarriors");
-const DinoWarriorsDev = artifacts.require("DinoWarriorsDev");
 
 var tokenData = require('../../data/cards.json')
 var tierData = require('../../data/tiers.json')

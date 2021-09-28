@@ -17,6 +17,7 @@ contract("Test minting logic of different tiers", function(accounts) {
         
         // Add a test tier and token to the contract
         const testToken = web3.utils.fromAscii('TEST_TOKEN');
+        const no_token =  web3.utils.asciiToHex(''); 
         const tokenPrice = 10;
         const tokenAmount = 3;
         const dropWave = 1;
@@ -29,20 +30,20 @@ contract("Test minting logic of different tiers", function(accounts) {
             "The price was not adjusted correctly")
 
         // Mining should not be possible yet
-        await truffleAssert.reverts(dinowarriors.methods['_mint(bytes32,uint256)'](testToken, 1, {from: minterAddress1}),
-            "You are not allowed to mint this token at this point in time.")
+        await truffleAssert.reverts(dinowarriors.methods['_mint(bytes32,uint256,bytes32)'](testToken, 1, no_token, {from: minterAddress1}),
+            "Token is not open for minting")
 
         // Make the token mintable
         await dinowarriors.setTierMintability(testToken, 2 ,{from: ownerAddress});
 
         // Without paying the tokenPrice, minting fails
-        await truffleAssert.reverts(dinowarriors.methods['_mint(bytes32,uint256)'](testToken, 1, {from: minterAddress1}),
+        await truffleAssert.reverts(dinowarriors.methods['_mint(bytes32,uint256,bytes32)'](testToken, 1, no_token, {from: minterAddress1}),
             "Invalid ETH paid")
 
         // Mint all tokens
         let ownerBalance = web3.utils.toBN(await web3.eth.getBalance(ownerAddress))
         for(let i=0; i<tokenAmount; i++){
-            await dinowarriors.methods['_mint(bytes32,uint256,bytes32)'](testToken, 1, web3.utils.asciiToHex(''), {from: minterAddresses[i], value: tokenPrice})
+            await dinowarriors.methods['_mint(bytes32,uint256,bytes32)'](testToken, 1, no_token, {from: minterAddresses[i], value: tokenPrice})
             // Check if minter received tokens
             assert.equal(await dinowarriors.balanceOf(minterAddresses[i], (await dinowarriors.tokenInfoFromBytes32.call(testToken)).id), 1,
                 "Tokens not on minter balance")
@@ -56,7 +57,7 @@ contract("Test minting logic of different tiers", function(accounts) {
             "Owner did not receive all funds")
 
         // All tokens are minted, no minting is possible anymore
-        await truffleAssert.reverts(dinowarriors.methods['_mint(bytes32,uint256,bytes32)'](testToken, 1, web3.utils.asciiToHex(''), {from: minterAddress4, value: tokenPrice}),
+        await truffleAssert.reverts(dinowarriors.methods['_mint(bytes32,uint256,bytes32)'](testToken, 1, no_token, {from: minterAddress4, value: tokenPrice}),
             "Insufficient tokens left for this transaction")
 
   })
@@ -77,6 +78,7 @@ contract("Test minting logic of different tiers", function(accounts) {
     const testToken1 = web3.utils.fromAscii('TEST_TOKEN_1');
     const testToken2 = web3.utils.fromAscii('TEST_TOKEN_2');
     const testToken3 = web3.utils.fromAscii('TEST_TOKEN_3');
+    const no_token =  web3.utils.asciiToHex(''); 
     const tokenPrice = 10;
     const tokenAmount = 3;
     const dropWave = 1;
@@ -92,11 +94,11 @@ contract("Test minting logic of different tiers", function(accounts) {
     
     // Mining of token1 should work, token2 and token3 should not be possible yet
     await truffleAssert.reverts(dinowarriors.methods['_mint(bytes32,uint256,bytes32)'](testToken2, 1, testToken1, {from: minterAddress1, value: tokenPrice}),
-        "You are not allowed to mint this token at this point in time.")
+        "You have no balance of the access token provided.")
     await truffleAssert.reverts(dinowarriors.methods['_mint(bytes32,uint256,bytes32)'](testToken3, 1, testToken1, {from: minterAddress1, value: tokenPrice}),
-        "You are not allowed to mint this token at this point in time.")
+        "You have no balance of the access token provided.")
     
-    await dinowarriors.methods['_mint(bytes32,uint256,bytes32)'](testToken1, 1, web3.utils.asciiToHex(''), {from: minterAddress1, value: tokenPrice})
+    await dinowarriors.methods['_mint(bytes32,uint256,bytes32)'](testToken1, 1, no_token, {from: minterAddress1, value: tokenPrice})
     assert.equal(await dinowarriors.balanceOf(minterAddress1, (await dinowarriors.tokenInfoFromBytes32.call(testToken1)).id), 1,
         "Tokens have the wrong balance")
     assert.equal(await dinowarriors.balanceOf(minterAddress1, (await dinowarriors.tokenInfoFromBytes32.call(testToken2)).id), 0,
