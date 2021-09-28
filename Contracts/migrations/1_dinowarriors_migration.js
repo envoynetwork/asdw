@@ -24,6 +24,7 @@ module.exports = async function (deployer, network) {
                                        web3.utils.asciiToHex(tier.tokenToBurn),
                                        tier.mintPerTransaction,
                                        tier.whitelist)
+            console.log(tier.name, '0x' + web3.utils.padRight(web3.utils.asciiToHex(tier.name).replace('0x', ''), 64))
         }
 
         // Add tokens to the contract
@@ -39,9 +40,9 @@ module.exports = async function (deployer, network) {
             amountsToPremint);
         
         // Get mapping from bytes32 string to uint. Apply on local env to avoid gas costs
-        // for(i=0; i<names.length; i++){
-        //     console.log(tokenData.names[i], (await dinowarriors.tokenInfoFromBytes32(names[i])).id.toString())
-        // }
+        for(i=0; i<names.length; i++){
+            console.log(tokenData.names[i], (await dinowarriors.tokenInfoFromBytes32(names[i])).id.toString(), '0x' + web3.utils.padRight(names[i].replace('0x', ''), 64))
+        }
         // Add whitelisted accounts for presale
         console.log("Adding a whitelist for minting of length " + whitelist.amounts.length)
         let whitelist_addresses = whitelist.addresses.slice();
