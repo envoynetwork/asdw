@@ -54,10 +54,25 @@
           providerOrUrl: "https://rinkeby.infura.io/v3/" + infuraKey})      
         },
       network_id: 4
-    } 
+    },
     // Mainnet
-    // TODO
 
+    mainnet: {
+      provider: function() {
+        return new HDWalletProvider({
+          privateKeys: privateKeys,
+          providerOrUrl: "https://mainnet.infura.io/v3/" + infuraKeyProduction})      
+        },
+      network_id: 1
+    },
+    mainnetFullFlow: {
+      provider: function() {
+        return new HDWalletProvider({
+          privateKeys: privateKeys,
+          providerOrUrl: "https://mainnet.infura.io/v3/" + infuraKeyProduction})      
+        },
+      network_id: 1
+    } 
   },
  
   // Default mocha options

@@ -3,6 +3,7 @@ const fs = require('fs');
 
 const abi = require('../contracts/build/contracts/DinoWarriors.json')
 const infuraKey = fs.readFileSync("../secrets/.infuraKey").toString().trim();
+const infuraKey = fs.readFileSync("../secrets/.infuraKeyProduction").toString().trim();
 const privateKey = fs.readFileSync("../secrets/.secret").toString().trim();
 // Indicating to which blockchain to connect
 function connectWeb3(network){
@@ -14,6 +15,10 @@ function connectWeb3(network){
     } else if(network == 'rinkeby'){
         
         webProvider = "https://rinkeby.infura.io/v3/"+infuraKey;
+        contractAddress = "0x452E21fa2C6c53C6a92F66485cE7735A3CD99cbE";
+    } else if(network == 'mainnet'){
+        
+        webProvider = "https://mainnet.infura.io/v3/"+infuraKeyProduction;
         contractAddress = "0x452E21fa2C6c53C6a92F66485cE7735A3CD99cbE";
     }
 
