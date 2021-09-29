@@ -44,10 +44,10 @@ module.exports = async function (deployer, network) {
         //     console.log(tokenData.names[i], (await dinowarriors.tokenInfoFromBytes32(names[i])).id.toString(), '0x' + web3.utils.padRight(names[i].replace('0x', ''), 64))
         // }
         // Add whitelisted accounts for presale
-        console.log("Adding a whitelist for minting of length " + whitelist.amounts.length)
-        let whitelist_addresses = whitelist.addresses.slice();
-        let whitelist_amounts = whitelist.amounts.slice();
-        await dinowarriors.updateWhitelist(whitelist_addresses, false, whitelist_amounts);
+        // console.log("Adding a whitelist for minting of length " + whitelist.amounts.length)
+        // let whitelist_addresses = whitelist.addresses.slice();
+        // let whitelist_amounts = whitelist.amounts.slice();
+        // await dinowarriors.updateWhitelist(whitelist_addresses, false, whitelist_amounts);
     }
 
 };
