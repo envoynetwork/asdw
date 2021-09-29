@@ -11,7 +11,7 @@ async function updateWhitelist(network, file, newWave){
     let contract = values[1]
     
     let data = require(file)
-    let transaction = await contract.methods.updateWhitelist(data.addresses, newWave, data.amounts).send({from: web3.eth.defaultAccount, gas: 2300000})
+    let transaction = await contract.methods.updateWhitelist(data.addresses, newWave, data.amounts).send({from: web3.eth.defaultAccount, gas: 23000000})
     console.log(transaction)
 }
 

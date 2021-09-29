@@ -9,15 +9,6 @@
         "whitelist": true
     },
     {
-        "name": "TRADING_CARDS",
-        "price": 0,
-        "mintable": 0,
-        "dropWave": 1,
-        "tokenToBurn": "CLASSIC",
-        "mintPerTransaction": 1,
-        "whitelist": false
-    },
-    {
         "name": "SILVER",
         "price": 0.15,
         "mintable": 0,

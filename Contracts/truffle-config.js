@@ -45,8 +45,7 @@
           privateKeys: privateKeys,
           providerOrUrl: "https://rinkeby.infura.io/v3/" + infuraKey})      
         },
-      network_id: 4,
-      gas: 4712388000
+      network_id: 4
     },
     rinkebyFullFlow: {
       provider: function() {
