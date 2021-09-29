@@ -37,7 +37,6 @@
       network_id: 5,
       gas: 4000000
     },
- 
     // Testnet
     rinkeby: {
       provider: function() {

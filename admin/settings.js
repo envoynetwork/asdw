@@ -15,11 +15,11 @@ function connectWeb3(network){
     } else if(network == 'rinkeby'){
         
         webProvider = "https://rinkeby.infura.io/v3/"+infuraKey;
-        contractAddress = "0x452E21fa2C6c53C6a92F66485cE7735A3CD99cbE";
+        contractAddress = "0x87A23c29A57bDaF0D2a36C2C9d4019171F04eC3e";
     } else if(network == 'mainnet'){
         
         webProvider = "https://mainnet.infura.io/v3/"+infuraKeyProduction;
-        contractAddress = "0x452E21fa2C6c53C6a92F66485cE7735A3CD99cbE";
+        contractAddress = "0x8eDF0426c0B0D10B50D72eb3f0C40985438cDAaB";
     }
 
     // Setup once contract is deployed
