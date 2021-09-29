@@ -11,6 +11,8 @@ This folder contains the smart contract code. The code keeps track of NFT inform
 
 Both tiers and tokens are stored in a mapping from a human readable name (in bytes32) to a struct. The struct datastructures are described below.
 
+There is also a `whitelist` mapping. This whitelist works in different waves. The inner map will keep track of how many transactions an address is allowed to do (mapping from `address` to `uint256`). The outer mapping will map the whitelist wave to the inner map. When whitelisting is enabled for a tier, only addresses with remaining transactions for the latest wave will be allowed to mint.
+
 ### Tier level
 
 Information stored at tier level are the price, the drop wave, if the token is mintable and if tokens need to be burned to mint the token.
@@ -25,29 +27,47 @@ Wether the token is **mintable** depends on an integer with following logic:
 
 This way, the contract owner can decide when tokens are mintable by who.
 
-Finally, some tiers require a **token to be burned** before minting is possible. For example, the original silver tier tokens can be minted for free by token owners who:
+Some tiers require a **token to be burned** before minting is possible. For example, the original silver tier tokens can be minted for free by token owners who:
 
 - Already own a gold or diamond tier ASDW NFT
-- Own a OG card FT, serving as 'access ticket' to the minting process. If a silver tier NFT is minted with this token, it will be burned.
+- Own a classic silver FT, serving as 'access ticket' to the minting process. If a silver tier NFT is minted with this token, it will be burned.
+
+The **maximum amount of tokens in one mintingtransaction**, limiting the amount of tokens someone can mint at once. This avoids someone minting all tokens in one transaction, and allows a more fair distribution of tokens.
+
+Using a **whitelist** or not. Sometimes, only whitelisted addresses are allowed to mint for a tier. If this value is set to `true`, only addresses with remaining transactions in the whitelist mapping will be allowed to mint tokens of this tier.
 
 ### Tokens
 
-Tokens are based on the ERC1155 standard with additional properties. The first one is the **id** of the underlying ERC1155 contract, which will be an increasing number for each now token. The **current** and **total** token amounts are stored to make sure only a limited amount of tokens can be minted. Finally, the **tier** reference is added to access all the tier information described in the previous paragraph.
+Tokens are based on the ERC1155 standard with additional properties. The properties are stored in a mapping with the **id** of the underlying ERC1155 contract as key. This id is the uint256 version of the human readable bytes32 technical name of the token (if the token is called *DINO_1*, the id will be the result of `uint256('DINO_1')`). The **current** and **total** token amounts are stored in the struct to make sure only a limited amount of tokens can be minted. Finally, the **tier** reference is added to access all the tier information described in the previous paragraph.
 
 ### Minting new tokens
 
-If you want to mint a token, you can use the _mint function with 1 or 2 arguments:
+If you want to mint a token, you can use the _mint function with 3 arguments:
 
 - First one is always the name of the token to mint
-- Second, optional argument is the already owned token that gives the minter the right to mint.
+- Second, the amount of tokens to mint
+- Third, the already owned token that gives the minter the right to mint. This is only applicable if the `mintable` field of the tier is greater than 0, and lesser than the latest dropwave+1
 
-Depending on the tier configuration, the second argument might be needed. Sometimes everyone can mint (e.g. OG cards), sometimes only owners of drops in a certain wave are allowed to mint (e.g. initial silver tier). In the last case, a second token should be provided to proove minting is allowed. Of course, the minter should own tokens of the provided secondairy token.
+Depending on the tier configuration, the last argument might be needed. Sometimes everyone can mint (e.g. classic silvers), sometimes only owners of drops in a certain wave are allowed to mint (e.g. silver trading cards). In the last case, a second token should be provided to proove minting is allowed. Of course, the minter should own tokens of the provided secondairy token.
 Some tiers require a fee to be paid. This fee is described in the tier struct and should be send with the transaction. It will automatically be transfered to a wallet defined  by the contract owner.
+
+Tokens can only be minted until the total supply is reached, afterwards the transaction will revert.
+
+The limit of tokens to mint in one transaction is set in the tier. The transaction will revert if you try to mint more.
+
+In some situations like presale, a whitelist is applied. This whitelist allow a list of addresses to make a certain amount of minting transactions. Minters not on the latest version of the list will not be allowed to mint.
+
+Summary of the requirements to mint:
+
+- The token should exist
+- The token did not yet reach the total supply
+- If the tier uses a whitelist, the minter should have transactions left in the latest whitelist version
+- The tier has mintability > 0, and if the mintability <= latest drop wave, you need to provide a valid token that allows minting which you own
 
 ## Networks
 
 ### Rinkeby
 
-**Contract address**: 0x3d38945ea7f29d8e110da1788e2beaee1b11c02f
+**Contract address**: 0xc57dd4e273fdab31be9fa97d863c0feed20e4cda
 **Contract owner**:  0x6b4934c85B8cb94A6a7aC4496a2eEc9184fFac59
 **Transaction hash**: 0x083a1263c1a8a357aa37aab27347b62e7455d342aad5d5694c84ef4bd52d277f

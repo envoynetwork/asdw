@@ -1,0 +1,38 @@
+[
+    {
+        "name": "COMMUNITY",
+        "price": 0,
+        "mintable": 0,
+        "dropWave": 1,
+        "tokenToBurn": "",
+        "mintPerTransaction": 1,
+        "whitelist": true
+    },
+    {
+        "name": "SILVER",
+        "price": 0.15,
+        "mintable": 0,
+        "dropWave": 1,
+        "tokenToBurn": "",
+        "mintPerTransaction": 3,
+        "whitelist": true
+    },
+    {
+        "name": "GOLD",
+        "price": 0.35,
+        "mintable": 0,
+        "dropWave": 1,
+        "tokenToBurn": "",
+        "mintPerTransaction": 1,
+        "whitelist": true
+    },
+    {
+        "name": "DIAMOND",
+        "price": 0,
+        "mintable": 0,
+        "dropWave": 1,
+        "tokenToBurn": "",
+        "mintPerTransaction": 1,
+        "whitelist": false
+    }
+]

@@ -5,6 +5,7 @@
 
 # Node artifact files
 */node_modules/
+node_modules/
 dist/
 
 # Compiled Java class files
@@ -49,6 +50,7 @@ Thumbs.db
 *.wmv
 
 # Keys
+secrets/*
 Contracts/.secret
 Contracts/.infuraKey
 

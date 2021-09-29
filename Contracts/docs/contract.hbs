@@ -11,6 +11,22 @@
 - [`{{type}} {{name}}`](#{{anchor}})
 {{/ownVariables}}
 {{/if}}
+
+{{#if ownStructs}}
+## Structs:
+
+{{#each ownStructs}}
+
+### `{{name}}`
+
+{{#each members}}
+
+{{type}} {{name}}
+
+{{/each}}
+{{/each}}
+{{/if}}
+
 {{!-- 
 {{#ownVariables}}
 ### Variable `{{type}} {{name}}` {#{{anchor~}} }
