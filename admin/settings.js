@@ -14,7 +14,7 @@ function connectWeb3(network){
     } else if(network == 'rinkeby'){
         
         webProvider = "https://rinkeby.infura.io/v3/"+infuraKey;
-        contractAddress = "0xc57dd4e273fdab31be9fa97d863c0feed20e4cda";
+        contractAddress = "0x452E21fa2C6c53C6a92F66485cE7735A3CD99cbE";
     }
 
     // Setup once contract is deployed
