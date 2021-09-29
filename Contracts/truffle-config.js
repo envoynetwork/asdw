@@ -7,7 +7,7 @@
  const fs = require('fs');
  const privateKeys = [fs.readFileSync("../secrets/.secret").toString().trim()];
  const infuraKey = fs.readFileSync("../secrets/.infuraKey").toString().trim();
- 
+ const infuraKeyProduction = fs.readFileSync("../secrets/.infuraKeyProduction").toString().trim();
  module.exports = {
  
    // Ethereum networks

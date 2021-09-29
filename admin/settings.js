@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const abi = require('../contracts/build/contracts/DinoWarriors.json')
 const infuraKey = fs.readFileSync("../secrets/.infuraKey").toString().trim();
-const infuraKey = fs.readFileSync("../secrets/.infuraKeyProduction").toString().trim();
+const infuraKeyProduction = fs.readFileSync("../secrets/.infuraKeyProduction").toString().trim();
 const privateKey = fs.readFileSync("../secrets/.secret").toString().trim();
 // Indicating to which blockchain to connect
 function connectWeb3(network){
