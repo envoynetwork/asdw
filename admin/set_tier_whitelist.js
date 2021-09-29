@@ -26,7 +26,7 @@ if(argv.help || argv.h){
 else if(!argv.hasOwnProperty('network')){
     console.error('Provide a network with --network argument')
 } else if(!argv.hasOwnProperty('tier')){
-    console.error('Provide the name of the tier in ascii with the  --name argument')
+    console.error('Provide the name of the tier in ascii with the  --tier argument')
 } else if(!argv.hasOwnProperty('value')){
     console.error('Provide the value for `whitelist` with the  --value argument. True means the whitelist is used')
 } else {

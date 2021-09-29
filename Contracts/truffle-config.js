@@ -24,7 +24,8 @@
     developmentFullFlow: {
       host: "127.0.0.1",
       port: 8545,
-      network_id: "*"
+      network_id: "*",
+      gas: 4712388000
     },
     // Testnet
     goerli: {
@@ -42,14 +43,17 @@
       provider: function() {
         return new HDWalletProvider({
           privateKeys: privateKeys,
-          providerOrUrl: "https://rinkeby.infura.io/v3/" + infuraKey})      },
-      network_id: 4
+          providerOrUrl: "https://rinkeby.infura.io/v3/" + infuraKey})      
+        },
+      network_id: 4,
+      gas: 4712388000
     },
     rinkebyFullFlow: {
       provider: function() {
         return new HDWalletProvider({
           privateKeys: privateKeys,
-          providerOrUrl: "https://rinkeby.infura.io/v3/" + infuraKey})      },
+          providerOrUrl: "https://rinkeby.infura.io/v3/" + infuraKey})      
+        },
       network_id: 4
     } 
     // Mainnet

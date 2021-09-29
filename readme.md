@@ -68,6 +68,6 @@ Summary of the requirements to mint:
 
 ### Rinkeby
 
-**Contract address**: 0xac3fe33ab8ce9a0c26dbd8443d6943f987a9cfb2
+**Contract address**: 0xc57dd4e273fdab31be9fa97d863c0feed20e4cda
 **Contract owner**:  0x6b4934c85B8cb94A6a7aC4496a2eEc9184fFac59
 **Transaction hash**: 0x083a1263c1a8a357aa37aab27347b62e7455d342aad5d5694c84ef4bd52d277f
