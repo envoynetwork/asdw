@@ -21,9 +21,9 @@ if(argv.help || argv.h){
         "Options:\n",
         "--network: Name of the network to use, should be defined in settings.js\n",
         "--new: If true, a new whitelist will be made and previous whitelisted accounts cannot mint anymore. Defaults to false\n",
-        "--file: A JSON file containing 2 mappings: \n",
-        " - addresses: a list with addresses to whitelist \n",
-        " - amounts: the amount of transaction the address is whitelisted for\n",
+        "--file: The location to a JSON file containing 2 mappings: \n",
+        " * addresses: a list with addresses to whitelist \n",
+        " * amounts: the amount of transaction the address is whitelisted for\n",
         "Defaults to ../data/presale_whitelist.json\n"        
     )
 }

@@ -1,5 +1,5 @@
 const parseArgs = require('minimist')
-const argv = parseArgs(process.argv, {boolean: ['new', 'help', 'h'], default: {'file': '../data/tiers.json', 'new': false}})
+const argv = parseArgs(process.argv, {boolean: ['help', 'h'], default: {'file': '../data/tiers.json', 'new': false}})
 
 const connectWeb3 = require('./settings.js')
 
@@ -27,12 +27,17 @@ async function addTiers(network, file){
 
 if(argv.help || argv.h){
     console.log(
-        "\nFunction to set the value for `whitelist`. True means the whitelist is used.\n",
+        "\nFunction to add tiers based on a JSON file.\n",
         "Options:\n",
         "--network: Name of the network to use, should be defined in settings.js\n",
-        "--tier: Human readable technical name of the tier\n",
-        "--value: True means the whitelist is used, false not\n"
-        
+        "--file: Location of a JSON file with a list of mappings. The mappings contain the token arguments:\n",
+        " * name\n",
+        " * price\n",
+        " * mintable\n",
+        " * dropWave\n",
+        " * tokenToBurn\n",
+        " * mintPerTransaction\n",
+        " * whitelist\n",
     )
 }
 else if(!argv.hasOwnProperty('network')){

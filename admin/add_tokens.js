@@ -24,11 +24,14 @@ async function addTokens(network, file){
 
 if(argv.help || argv.h){
     console.log(
-        "\nFunction to set the value for `whitelist`. True means the whitelist is used.\n",
+        "\nFunction add a list of tokens to the contract based on a JSON file.\n",
         "Options:\n",
         "--network: Name of the network to use, should be defined in settings.js\n",
-        "--tier: Human readable technical name of the tier\n",
-        "--value: True means the whitelist is used, false not\n"
+        "--file: Location of a JSON file with a number of lists. The lists contain the token arguments:\n",
+        " * name: Human readable name of the token\n",
+        " * amounts: The amounts that will be available for each token.\n",
+        " * tiers: The tier the token is in\n",
+        " * amountsToPremint: How many tokens need to be minted by the contract owner?\n",
         
     )
 }

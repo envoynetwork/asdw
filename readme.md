@@ -66,8 +66,7 @@ Summary of the requirements to mint:
 
 ## Networks
 
-### Rinkeby
-
-**Contract address**: 0xc57dd4e273fdab31be9fa97d863c0feed20e4cda
-**Contract owner**:  0x6b4934c85B8cb94A6a7aC4496a2eEc9184fFac59
-**Transaction hash**: 0x083a1263c1a8a357aa37aab27347b62e7455d342aad5d5694c84ef4bd52d277f
+| Network&nbsp; | Address | Owner | Transaction hash |
+|-|-|-|-|
+| **Rinkeby** | 0x09322A1eFf1b253FcaC940635c4A9C505a8c0370 | 0x6b4934c85B8cb94A6a7aC4496a2eEc9184fFac59 | 0x4be7b4077f280ee9f9538dfc2f0e0d464f1ec1fe9b4393f3afeb3f84184a5745 |
+| **Main net** | 0x8eDF0426c0B0D10B50D72eb3f0C40985438cDAaB | 0x6b4934c85B8cb94A6a7aC4496a2eEc9184fFac59 | 0x6d398993a4706bfd5b8de2f27df4de70268e60b4c53e1ddc12915669577a53e4 |

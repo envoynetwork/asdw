@@ -1,5 +1,5 @@
 const parseArgs = require('minimist')
-const argv = parseArgs(process.argv, {boolean: ['help', 'h']})
+const argv = parseArgs(process.argv, {boolean: ['help', 'h'], default: {'value': false}})
 
 const connectWeb3 = require('./settings.js')
 
@@ -9,6 +9,7 @@ async function setTierMintability(network, tier, value){
     let contract = values[1]
     
     let tierAsBytes = '0x' + web3.utils.padRight(web3.utils.asciiToHex(tier).replace('0x', ''), 64)
+    console.log(tierAsBytes)
     let transaction = await contract.methods.setTierMintability(tierAsBytes, value).send({from: web3.eth.defaultAccount, gas: 230000})
     console.log(transaction)
 
@@ -16,7 +17,7 @@ async function setTierMintability(network, tier, value){
 
 if(argv.help || argv.h){
     console.log(
-        "\nFunction to set the price for a tier in Ether.\n",
+        "\nFunction to make tokens mintable.\n",
         "Options:\n",
         "--network: Name of the network to use, should be defined in settings.js\n",
         "--tier: Human readable technical name of the tier\n",
