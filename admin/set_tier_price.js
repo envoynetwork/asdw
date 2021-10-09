@@ -17,7 +17,7 @@ async function setTierPrice(network, tier, value){
 
 if(argv.help || argv.h){
     console.log(
-        "\nFunction to make a token mintable..\n",
+        "\nFunction to set the tier price in Ether.\n",
         "Options:\n",
         "--network: Name of the network to use, should be defined in settings.js\n",
         "--tier: Human readable technical name of the tier\n",
