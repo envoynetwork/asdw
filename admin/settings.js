@@ -9,21 +9,17 @@ const privateKey = fs.readFileSync("../secrets/.secret").toString().trim();
 function connectWeb3(network){
     var webProvider
     var contractAddress
-    const account
     if(network == 'development'){
         webProvider = "http://127.0.0.1:8545";
         contractAddress = ''
-        account = web3.eth.defaultAccount;
     } else if(network == 'rinkeby'){
         
         webProvider = "https://rinkeby.infura.io/v3/"+infuraKey;
-        contractAddress = "0x09322A1eFf1b253FcaC940635c4A9C505a8c0370";
-        account = web3.eth.accounts.privateKeyToAccount('0x' + privateKey);
+        contractAddress = "0x87A23c29A57bDaF0D2a36C2C9d4019171F04eC3e";
     } else if(network == 'mainnet'){
         
         webProvider = "https://mainnet.infura.io/v3/"+infuraKeyProduction;
         contractAddress = "0x8eDF0426c0B0D10B50D72eb3f0C40985438cDAaB";
-        account = web3.eth.accounts.privateKeyToAccount('0x' + privateKey);
     }
 
     // Setup once contract is deployed

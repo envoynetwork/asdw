@@ -1,0 +1,11 @@
+[
+    {
+        "name": "8BIT",
+        "price": 0,
+        "mintable": 0,
+        "dropWave": 2,
+        "tokenToBurn": "",
+        "mintPerTransaction": 100,
+        "whitelist": true
+    }
+]
