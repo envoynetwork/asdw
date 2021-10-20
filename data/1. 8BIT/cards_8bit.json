@@ -10,10 +10,14 @@
             "MAMMOTH_8BIT",
             "ODDY_8BIT",
             "OLLY_8BIT",
-            "SOLDIERS_8BIT"
+            "SOLDIERS_8BIT",
+            "COMMUNITY_ARTWORK_SILVER",
+            "COMMUNITY_ARTWORK_GOLD"
         ],
     "amounts":
         [   
+            250,
+            250,
             250,
             250,
             250,
@@ -36,10 +40,14 @@
             "8BIT",
             "8BIT",
             "8BIT",
-            "8BIT"
+            "8BIT",
+            "COMMUNITY",
+            "COMMUNITY"
         ],
     "amountsToPremint":
         [
+            0,
+            0,
             0,
             0,
             0,

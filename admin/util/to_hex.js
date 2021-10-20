@@ -1,6 +1,10 @@
 web3 = require('web3')
 
-var stringsToConvert =             ["ALEX_8BIT",
+var stringsToConvert =             
+["SILVER",
+"GOLD",
+"COMMUNITY",
+"ALEX_8BIT",
 "GORILLA_8BIT",
 "HERCULES_8BIT",
 "HIPPO_8BIT",
