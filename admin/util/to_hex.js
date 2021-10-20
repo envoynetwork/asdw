@@ -4,6 +4,7 @@ var stringsToConvert =
 ["SILVER",
 "GOLD",
 "COMMUNITY",
+"8BIT",
 "ALEX_8BIT",
 "GORILLA_8BIT",
 "HERCULES_8BIT",
@@ -13,8 +14,9 @@ var stringsToConvert =
 "MAMMOTH_8BIT",
 "ODDY_8BIT",
 "OLLY_8BIT",
-"8BIT",
-"SOLDIERS_8BIT"
+"SOLDIERS_8BIT",
+"COMMUNITY_ARTWORK_SILVER",
+"COMMUNITY_ARTWORK_GOLD"
 ]
 var hex
 var uint
