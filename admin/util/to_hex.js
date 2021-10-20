@@ -1,6 +1,10 @@
 web3 = require('web3')
 
-var stringsToConvert =             ["ALEX_8BIT",
+var stringsToConvert =             
+["SILVER",
+"GOLD",
+"COMMUNITY",
+"ALEX_8BIT",
 "GORILLA_8BIT",
 "HERCULES_8BIT",
 "HIPPO_8BIT",
@@ -8,7 +12,9 @@ var stringsToConvert =             ["ALEX_8BIT",
 "LEO_8BIT", 
 "MAMMOTH_8BIT",
 "ODDY_8BIT",
-"OLLY_8BIT"
+"OLLY_8BIT",
+"8BIT",
+"SOLDIERS_8BIT"
 ]
 var hex
 var uint
