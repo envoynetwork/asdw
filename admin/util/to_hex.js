@@ -8,7 +8,9 @@ var stringsToConvert =             ["ALEX_8BIT",
 "LEO_8BIT", 
 "MAMMOTH_8BIT",
 "ODDY_8BIT",
-"OLLY_8BIT"
+"OLLY_8BIT",
+"8BIT",
+"SOLDIERS_8BIT"
 ]
 var hex
 var uint

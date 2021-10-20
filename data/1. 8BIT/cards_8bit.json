@@ -9,10 +9,12 @@
             "LEO_8BIT", 
             "MAMMOTH_8BIT",
             "ODDY_8BIT",
-            "OLLY_8BIT"
+            "OLLY_8BIT",
+            "SOLDIERS_8BIT"
         ],
     "amounts":
         [   
+            250,
             250,
             250,
             250,
@@ -33,10 +35,12 @@
             "8BIT",
             "8BIT",
             "8BIT",
+            "8BIT",
             "8BIT"
         ],
     "amountsToPremint":
         [
+            0,
             0,
             0,
             0,
