@@ -1,8 +1,8 @@
 const DinoWarriors = artifacts.require("DinoWarriors");
 
-var tokenData = require('../../data/cards.json')
-var tierData = require('../../data/tiers.json')
-var whitelist = require('../../data/presale_whitelist.json')
+var tokenData = require('../../data/0. ORIGINALS/cards.json')
+var tierData = require('../../data/0. ORIGINALS/tiers.json')
+var whitelist = require('../../data/0. ORIGINALS/presale_whitelist.json')
 
 module.exports = async function (deployer, network) {
     

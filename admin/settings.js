@@ -11,7 +11,7 @@ function connectWeb3(network){
     var contractAddress
     if(network == 'development'){
         webProvider = "http://127.0.0.1:8545";
-        contractAddress = ''
+        contractAddress = '0xC9B242B1Fe4a40F75a2DD6591292aB8d33f0450D'
     } else if(network == 'rinkeby'){
         
         webProvider = "https://rinkeby.infura.io/v3/"+infuraKey;
