@@ -37,8 +37,10 @@ for(i=0;i<events.length;i++){
         counts[returnValue.to] = parseInt(returnValue.value)
     }
 }
+console.log("Total supply: ", counts['0x0000000000000000000000000000000000000000'])
 
-
+counts = Object.fromEntries(Object.entries(counts).filter(([_, v]) => v > null));
 let json = JSON.stringify(counts);
 fs.writeFile('../data/1. 8BIT/production_whitelist.json', json, (err)=>{if(err){console.log(err)}})
 console.log(counts)
+console.log("Whitelist count: ", Object. keys(counts).length)
